@@ -37,4 +37,16 @@ router.get("/delete/:id",(req,res)=>{
     res.redirect("/admin")
    })
 })
+router.get("/edit/:id",async(req,res)=>{
+ let productDetails=await productHelpers.getProduct(req.params.id)
+ console.log(productDetails)
+  res.render("admin/editproduct",{productDetails})
+ })
+ router.post("/editproduct/:id",(req,res)=>{
+  let id=req.params.id
+  let details = req.body
+   productHelpers.updateProduct(id,details).then(()=>{
+     res.redirect("/admin")
+   })
+ })
 module.exports = router;

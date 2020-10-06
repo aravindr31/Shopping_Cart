@@ -24,5 +24,26 @@ const { ObjectId } = require('mongodb');
                     resolve(res)
                 })
             });
-        }  
+        },
+        getProduct:(id)=>{
+            return new Promise((resolve,reject)=>{
+                db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:ObjectId(id)}).then((productDetails)=>{
+                    resolve(productDetails)
+                })
+            })
+        },
+        updateProduct:(id,details)=>{
+            return new Promise((resolve,reject)=>{
+                db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:ObjectId(id)},{
+                    $set:{
+                        name:details.name,
+                        category:details.category,
+                        price:details.price,
+                    }
+                }).then((response)=>{
+                    resolve()
+                })
+            })
+        }
+
     }
