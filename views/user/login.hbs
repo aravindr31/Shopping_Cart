@@ -1,0 +1,28 @@
+<div class="container">
+    <section>
+        <div class="col-md-6 m-auto"><br>
+            <h2 class="text-center">Login Here..</h2>
+            <br><br>
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <label for="Email">Email address</label>
+                    <input type="email" class="form-control" name="Email" id="Email" aria-describedby="emailHelp"
+                        placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password</label>
+                    <input type="password" class="form-control" name="Password" id="Password" placeholder="Password">
+                </div>
+                <p class="error text-center text-danger font-weight-light ">{{Errmsg}}</p>
+                <div>
+                    <a href="/signup">Create new Account..</a>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary ">Submit</button>
+                </div>
+
+            </form>
+        </div>
+
+    </section>
+</div>
