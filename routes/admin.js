@@ -45,8 +45,12 @@ router.get("/edit/:id",async(req,res)=>{
  router.post("/editproduct/:id",(req,res)=>{
   let id=req.params.id
   let details = req.body
+
    productHelpers.updateProduct(id,details).then(()=>{
+    let image=req.files.image
+    image.mv('./public/product_images/'+id+'.jpg')
      res.redirect("/admin")
+     
    })
  })
 module.exports = router;
