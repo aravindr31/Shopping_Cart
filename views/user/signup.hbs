@@ -1,9 +1,9 @@
-<div class="container">
-    <section>
-        <div class="col-md-6 m-auto">
+<section>
+    <div class="containermt-5 ">
+        <br>
+        <div class="col-md-6 m-auto  border rounded "><br>
+            <h2 class="text-center ">SignUp Here...</h2>
             <br>
-            <h2 class="text-center">SignUp Here...</h2>
-            <br><br>
             <form action="/signup" method="POST">
                 <div class="form-group">
                     <label for="Name">Name</label>
@@ -16,6 +16,11 @@
                         placeholder="Enter email">
                 </div>
                 <div class="form-group">
+                    <label for="Mobile">Mobile</label>
+                    <input type="number" class="form-control" name="Mobile" id="Mobile" aria-describedby="mobile"
+                        placeholder="Enter Mobile Number">
+                </div>
+                <div class="form-group">
                     <label for="Password">Password</label>
                     <input type="password" class="form-control" name="Password" id="Password" placeholder="Password">
                 </div>
@@ -23,11 +28,21 @@
                     <a href="/login">Already have account!!</a>
                 </div>
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary text-center">Submit</button>
+                    <button type="submit" class="btn btn-primary text-center">SignUp</button>
                 </div>
-
             </form>
+            <br>
         </div>
-
-    </section>
-</div>
+        <br>
+    </div>
+</section>
+<style>
+    .border{
+         box-shadow: 0 0 10px 0 rgba(73, 73, 73, 0.5);
+    }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>

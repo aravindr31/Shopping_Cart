@@ -1,0 +1,113 @@
+<section>
+    <div class="container">
+        <br>
+        {{#each orderDetails}}
+        <div id="topDiv">
+        <h5 class="text-left ml-2">Order ID : {{this._id}}</h5>
+        <h5 class="text-right ">Order Status: {{this.status}}</h5>
+        </div>
+        <div class="row ">
+            <div class="col-md-6  mb-2 border shadowDiv  rounded">
+                <br>
+                <h4 class="text-left">User Details [ {{this.userdetails._id}} ]</h4>
+                <br>
+                <div>
+                    <div class="input-group ml-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="validationTooltipUsernamePrepend">Name</span>
+                        </div>
+                        <input class="form-control mr-2" type="text" name="name" id="name"
+                            value="{{this.userdetails.Name}}" disabled>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="validationTooltipUsernamePrepend">Mobile</span>
+                        </div>
+                        <input class="form-control mr-2" type="text" name="mobile" id="mobile"
+                            value="{{this.userdetails.Mobile}}" disabled>
+                    </div>
+                    <br>
+                    <div class="input-group ml-1">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="validationTooltipUsernamePrepend">Email</span>
+                        </div>
+                        <input class="form-control  mr-2" type="text" name="email" id="email"
+                            value="{{this.userdetails.Email}}" disabled>
+                    </div>
+                    <br>
+                    <h4>Delivery Details</h4>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6 ">
+                            <h6>{{this.deliveryDetails.firstName}} {{this.deliveryDetails.lastName}}</h6>
+                            <h6>{{this.deliveryDetails.address}}</h6>
+                            <h6>{{this.deliveryDetails.locality}}</h6>
+                            <h6>{{this.deliveryDetails.landmark}}</h6>
+                            <h6>{{this.deliveryDetails.city}}</h6>
+                            <h6>{{this.deliveryDetails.state}}</h6>
+                            <h6>{{this.deliveryDetails.pincode}}</h6>
+                        </div>
+                        <div class="col-md-6 bottomDiv text-center ">
+                            <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="validationTooltipUsernamePrepend">Total</span>
+                            </div>
+                            <input class="form-control mr-2" type="text" name="total" id="total"
+                                value="{{this.Total}}" disabled>
+                                </div><br>
+
+                            <h6 class="text-left">Payment Mode : {{this.paymentMethod}}</h6><br>
+                            <h6 class="text-left">Ordered Date : </h6> 
+                            <h6 class="text-left">{{this.date}}</h6>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+            <div class=" col-md-6 ">
+                <table class="table  border shadowDiv  rounded " id="productstable">
+                    <thead>
+                        <tr>
+                            <th class="text-center" scope="col">Product Name</th>
+                            <th class="text-center" scope="col">Category</th>
+                            <th class="text-center" scope="col">Price</th>
+                            <th class="text-center" scope="col">Quantity</th>
+                            <th class="text-center" scope="col">Image</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each product}}
+                        <tr>
+                            <td class="text-center">{{this.product.name}}</td>
+                            <td class="text-center">{{this.product.category}}</td>
+                            <td class="text-center">{{this.product.price}}</td>
+                            <td class="text-center">{{this.quantity}}</td>
+                            <td class="text-center"><img style="width: 50px;height:50px;"
+                                    src="/product_images/{{this.product._id}}.jpg" alt="">
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+</section>
+
+<style>
+    .shadowDiv {
+        box-shadow: 0 0 10px 0 rgba(214, 196, 196, 0.6);
+    }
+
+    .bottomDiv {
+        border-left: solid 1px lightgrey;
+    }
+
+    input[type="text"][disabled] {
+        background-color: white;
+    }
+    #topDiv{
+        display: flex;
+        flex: 1;
+        justify-content: space-between;
+    }
+</style>

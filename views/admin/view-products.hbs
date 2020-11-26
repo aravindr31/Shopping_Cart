@@ -3,8 +3,9 @@
         <div class="row mt-4">
             <a class="btn btn-success ml-auto" href="/admin/addproduct">Add Product</a>
         </div>
-        <table class="table mt-5">
-  <thead>
+        <br>
+        <table class="table mt-5" id="productstable">
+  <thead> 
     <tr>
       <th scope="col">Product Name</th>
       <th scope="col">Category</th>
@@ -30,3 +31,8 @@
 </table>
     </div>
 </section>
+<script>
+  $(function () {
+    $('#productstable').DataTable();
+} );
+</script>

@@ -1,0 +1,54 @@
+<section>
+  <div class="container ">
+    {{!-- <div class="row mt-4">
+            <a class="btn btn-success ml-auto" href="/admin/addproduct">Add Product</a>
+        </div> --}}
+    <table class="table mt-5">
+      <thead>
+        <tr>
+          <th class="text-center">Order ID</th>
+          <th class="text-center">Pincode</th>
+          <th class="text-center">Mobile</th>
+          <th class="text-center" scope="col">Payment </th>
+          <th class="text-center" scope="col">Total</th>
+          <th class="text-center">Status</th>
+          {{!-- <th class="text-center">Action</th> --}}
+
+      </thead>
+      <tbody>
+        {{#each orders}}
+        <tr>
+          <td class="text-center align-middile"><a href="/admin/orderdetails/{{this._id}}">{{this._id}}</a></td>
+          <td class="text-center">{{this.deliveryDetails.pincode}}</td>
+          <td class="text-center">{{this.deliveryDetails.mobile}}</td>
+          <td class="text-center">{{this.paymentMethod}}</td>
+          <td class="text-center">{{this.Total}}</td>
+          <td class="text-center">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" id="action-btn" aria-expanded="false">
+                {{this.status}}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <button class="dropdown-item" value="Placed" onclick="changeAction('{{this._id}}',this.value)">Placed</a>
+                <button class="dropdown-item " value="Confirmed" onclick="changeAction('{{this._id}}',this.value)">Confirmed</button>
+                <button class="dropdown-item " value="Shipped" onclick="changeAction('{{this._id}}',this.value)">Shipped</button>
+                <button class="dropdown-item " value="Delivered" onclick="changeAction('{{this._id}}',this.value)">Delivered</button>
+                <button class="dropdown-item " value="Cancelled" onclick="changeAction('{{this._id}}',this.value)">Cancelled</button>
+              </div>
+            </div>
+          </td>
+          {{!-- <td class="text-center">
+            <button class="btn btn-danger" id="action-btn" onclick="change_action('{{this._id}}')">Update
+              Status</button>
+          </td> --}}
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<script>
+
+</script>

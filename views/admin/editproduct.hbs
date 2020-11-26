@@ -24,10 +24,10 @@
                 <div class="form-group">
                     <label for="image">Image</label>
                     <br>
-                    <img src="/product_images/{{productDetails._id}}.jpg" alt="{{productDetails.name}}" style="width: 100px;height=100px;">
+                    <img src="/product_images/{{productDetails._id}}.jpg" alt="{{productDetails.name}}" id="viewImg" style="width: 100px;height=100px;">
                     <br><br>
                     <input type="file" class="form-control" name="image"
-                    placeholder="Product Image">
+                    placeholder="Product Image" onchange="viewImage(event)">
                 </div>
                 <button type="submit" class="btn btn-success">Update Product</button>
                 <a href="/admin" class="btn btn-secondary">Cancel</a>
@@ -36,4 +36,8 @@
     </div>
 </div>
 </section>
-
+<script>
+    function viewImage(event){
+        document.getElementById('viewImg').src=URL.createObjectURL(event.target.files[0])
+    }
+</script>

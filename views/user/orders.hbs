@@ -1,0 +1,42 @@
+<section>
+  <div class="container ">
+    {{!-- <div class="row mt-4">
+            <a class="btn btn-success ml-auto" href="/admin/addproduct">Add Product</a>
+        </div> --}}
+    <table class="table mt-5">
+      <thead>
+        <tr>
+          <th class="text-center">Date</th>
+          <th class="text-center">Address</th>
+          <th class="text-center">Pincode</th>
+          <th class="text-center">Mobile</th>
+          <th class="text-center">Payment </th>
+          <th class="text-center">Total</th>
+          <th>Status</th>
+          <th></th>
+          <th class="text-center">Cancel</th>
+
+
+      </thead>
+      <tbody>
+        {{#each orders}}
+        <tr>
+          <td>{{this.date}}</td>
+          <td>{{this.deliveryDetails.address}}</td>
+          <td>{{this.deliveryDetails.pincode}}</td>
+          <td>{{this.deliveryDetails.mobile}}</td>
+          <td>{{this.paymentMethod}}</td>
+          <td>{{this.Total}}</td>
+          <td>{{this.status}}</td>
+          <td class="text-center">
+            <a href="/view_order_products/{{this._id}}" class="btn btn-primary">View Products</a>
+          </td>
+          <td class="text-center">
+            <button onclick="cancelFunction('{{this._id}}')" class="btn btn-danger">Cancel Order</button>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>
