@@ -32,9 +32,7 @@ function deleteFromCart(userId, prodId, cartId) {
   });
 }
 function changeQuantity(cartId, proId, userId, count) {
-  console.log(proId, cartId, count);
   let quantity = parseInt(document.getElementById(proId).innerHTML);
-  //console.log(quantity)
   count = parseInt(count);
   $.ajax({
     url: "/change_product_quantity",
@@ -47,7 +45,6 @@ function changeQuantity(cartId, proId, userId, count) {
     },
     method: "post",
     success: (response) => {
-      console.log(response.totalAmount);
       if (response.removeProduct) {
         alert("Product removed from cart");
         location.reload();
@@ -69,7 +66,6 @@ $("#checkout_form").submit((e) => {
       if (response.cod_success) {
         location.href = "/order_success";
       } else {
-        console.log(response);
         razorpayPayment(response);
       }
     },
@@ -80,20 +76,12 @@ function razorpayPayment(order) {
     key: "rzp_test_Jt7dPp8jwV1KsB", // Enter the Key ID generated from the Dashboard
     amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     currency: "INR",
-    name: "Amazon-clone",
+    name: "Flipzone",
     description: "Test Transaction",
     image: "https://example.com/your_logo",
     order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     handler: function (response) {
       verifyPayment(response, order);
-    },
-    prefill: {
-      name: "Gaurav Kumar",
-      email: "gaurav.kumar@example.com",
-      contact: "9999999999",
-    },
-    notes: {
-      address: "Razorpay Corporate Office",
     },
     theme: {
       color: "#F37254",
@@ -131,21 +119,4 @@ $.ajax({
   }
 
 })
-}
-//ADMIN PANEL
-function changeAction(orderId,state) {
- // alert('orderId,state')
-  $.ajax({
-    url : '/admin/change_action',
-    data : {
-      orderId :orderId,
-      state : state
-    },
-    method : 'post',
-    success :(response) =>{
-      if (response.status){
-        location.reload()
-      }
-    }
-  })
 }

@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 const db = require("../config/connection");
 const collection = require("../config/collections");
 const bcrypt = require("bcrypt");
@@ -21,7 +21,6 @@ module.exports = {
     });
   },
   login: (signInData) => {
-    console.log(process.env.razorpay_key,process.env.razorpay_secret)
     return new Promise(async (resolve, reject) => {
       let response = {};
       let user = await db
@@ -31,18 +30,14 @@ module.exports = {
       if (user) {
         bcrypt.compare(signInData.Password, user.Password).then((status) => {
           if (status) {
-            console.log("Login Success");
             response.user = user;
             response.loginStatus = true;
-            console.log(response);
             resolve(response);
           } else {
-            console.log("Login Failed");
             resolve({ loginStatus: false });
           }
         });
       } else {
-        console.log("User Not Found");
         resolve({ loginStatus: false });
       }
     });
@@ -53,8 +48,6 @@ module.exports = {
       quantity: 1,
     };
     return new Promise(async (resolve, reject) => {
-      console.log(proId);
-      console.log(userId);
       let userCart = await db
         .get()
         .collection(collection.CART_COLLECTION)
@@ -62,11 +55,9 @@ module.exports = {
 
       //let cartProducts=await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:ObjectId(id)}).then((data)=>{
       if (userCart) {
-        // console.log("user found")
         let proExist = userCart.products.findIndex(
           (product) => product.item == proId
         );
-        console.log(proExist);
         if (proExist != -1) {
           db.get()
             .collection(collection.CART_COLLECTION)
@@ -142,28 +133,23 @@ module.exports = {
           },
         ])
         .toArray();
-      //console.log(cartItems[0].product);
       resolve(cartItems);
     });
   },
   getCartCount: (userId) => {
-    // console.log(userId);
     return new Promise(async (resolve, reject) => {
       let count = 0;
       let cart = await db
         .get()
         .collection(collection.CART_COLLECTION)
         .findOne({ user: ObjectId(userId) });
-      // console.log(cart);
       if (cart) {
         count = cart.products.length;
-        //console.log(cart)
       }
       resolve(count);
     });
   },
   changeProductQuantity: (details) => {
-    //console.log(details)
     quantity = parseInt(details.quantity);
     count = parseInt(details.count);
     return new Promise((resolve, reject) => {
@@ -192,7 +178,6 @@ module.exports = {
             }
           )
           .then((response) => {
-            console.log(response);
             resolve({ status: true });
           });
       }
@@ -254,7 +239,6 @@ module.exports = {
           },
         ])
         .toArray();
-      console.log(total[0].total);
       resolve(total[0].total);
     });
   },
@@ -269,20 +253,19 @@ module.exports = {
   },
   placeOrder: (order, product, total) => {
     return new Promise((resolve, reject) => {
-      console.log(order, product, total);
       let status = order["payment-method"] === "COD" ? "Placed" : "Pending";
-        let orderObj = {
-          deliveryDetails: {
-            firstName: order.firstName,
-            lastName: order.lastName,
-            address: order.address,
-            locality: order.locality,
-            landmark: order.landmark,
-            city: order.place,
-            state: order.state,
-            pincode: order.pincode,
-            mobile: order.mobile,
-          },
+      let orderObj = {
+        deliveryDetails: {
+          firstName: order.firstName,
+          lastName: order.lastName,
+          address: order.address,
+          locality: order.locality,
+          landmark: order.landmark,
+          city: order.place,
+          state: order.state,
+          pincode: order.pincode,
+          mobile: order.mobile,
+        },
         userId: ObjectId(order.userId),
         paymentMethod: order["payment-method"],
         products: product,
@@ -290,6 +273,7 @@ module.exports = {
         date: new Date(),
         status: status,
       };
+
       db.get()
         .collection(collection.ORDER_COLLECTION)
         .insertOne(orderObj)
@@ -307,13 +291,12 @@ module.exports = {
         .get()
         .collection(collection.ORDER_COLLECTION)
         .find({ userId: ObjectId(userId) })
+        .sort({date:-1})
         .toArray();
-      console.log(orders);
       resolve(orders);
     });
   },
   changeAction: (orderId) => {
-    console.log(orderId);
     return new Promise(async (resolve, reject) => {
       await db
         .get()
@@ -322,17 +305,16 @@ module.exports = {
           { _id: ObjectId(orderId) },
           {
             $set: {
-              status: "Cancelled"
+              status: "Cancelled",
             },
           }
         )
         .then(() => {
-          resolve({status:true});
+          resolve({ status: true });
         });
     });
   },
   getOrderProducts: (orderId) => {
-    console.log(orderId);
     return new Promise(async (resolve, reject) => {
       await db
         .get()
@@ -368,7 +350,6 @@ module.exports = {
         ])
         .toArray()
         .then((orderItems) => {
-          console.log(orderItems);
           resolve(orderItems);
         });
     });
@@ -380,7 +361,6 @@ module.exports = {
         .collection(collection.ORDER_COLLECTION)
         .find({ _id: ObjectId(orderId) }, { projection: { status: 1, _id: 0 } })
         .toArray();
-        console.log(orderStatus)
       resolve(orderStatus[0]);
     });
   },
@@ -392,7 +372,6 @@ module.exports = {
         receipt: "" + orderId,
       };
       instance.orders.create(options, function (err, order) {
-        console.log(order);
         resolve(order);
       });
     });
@@ -401,7 +380,6 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const crypto = require("crypto");
       let hmac = crypto.createHmac("sha256", "j3G9STm9IILKgchw9VrGRAQ1");
-            console.log(hmac)
       hmac.update(
         details["payment[razorpay_order_id]"] +
           "|" +
@@ -424,7 +402,7 @@ module.exports = {
           { _id: ObjectId(orderId) },
           {
             $set: {
-              status: "Placed",   
+              status: "Placed",
             },
           }
         )

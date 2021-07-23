@@ -3,7 +3,6 @@ var collection = require("../config/collections");
 const { ObjectId } = require("mongodb");
 module.exports = {
   login: (signInData) => {
-    console.log(signInData);
     return new Promise(async (resolve, reject) => {
       let auth = await db
         .get()
@@ -21,12 +20,10 @@ module.exports = {
           },
         ])
         .toArray();
-      console.log(auth[0]);
       resolve(auth[0]);
     });
   },
   addProduct: (product, callback) => {
-    console.log(product);
 
     db.get()
       .collection("product")
@@ -91,7 +88,6 @@ module.exports = {
         .collection(collection.ORDER_COLLECTION)
         .find()
         .toArray();
-      console.log(orders);
       resolve(orders);
     });
   },
@@ -102,7 +98,6 @@ module.exports = {
         .collection(collection.USER_COLLECTION)
         .find()
         .toArray();
-      console.log(users);
       resolve(users);
     });
   },
@@ -113,13 +108,11 @@ module.exports = {
         .collection(collection.USER_COLLECTION)
         .remove({ _id: ObjectId(userId) })
         .then(() => {
-          console.log();
           resolve();
         });
     });
   },
   changeAction: (stateChange) => {
-    console.log(stateChange);
     return new Promise(async (resolve, reject) => {
       await db
         .get()
@@ -138,7 +131,6 @@ module.exports = {
     });
   },
   orderDetails: (orderId) => {
-    console.log(orderId);
     return new Promise(async (resolve, reject) => {
       let orderDetails = await db
         .get()
@@ -171,7 +163,6 @@ module.exports = {
           },
         ])
         .toArray();
-      console.log(orderDetails);
       resolve(orderDetails);
     });
   },
@@ -210,7 +201,6 @@ module.exports = {
           },
         ])
         .toArray()
-         // console.log(productDetails);
           resolve(productDetails);
     });
   },

@@ -21,12 +21,10 @@ router.get("/login", (req, res) => {
   req.session.adminLoginErr = "";
 });
 router.post("/login", (req, res) => {
-  console.log(req.body);
   productHelpers.login(req.body).then((data) => {
     if (data.status) {
       req.session.adminLogin = true;
       req.session.admin = data.username;
-      // console.log(data.admin)
       res.redirect("/admin");
     } else {
       req.session.adminLoginErr = "Invalid Username or Password";
@@ -38,7 +36,6 @@ router.post("/login", (req, res) => {
 router.get("/", verifyLogin, function (req, res, next) {
   let adminLog = req.session.admin;
   productHelpers.getAllProducts().then((products) => {
-    console.log(products);
     if(adminLog){
       res.render("admin/view-products", {
         admin: true,
@@ -57,8 +54,6 @@ router.get("/addproduct", verifyLogin, (req, res) => {
 });
 
 router.post("/addproduct", (req, res) => {
-  console.log(req.body);
-  console.log(req.files.image);
 
   productHelpers.addProduct(req.body, (id) => {
     let image = req.files.image;
@@ -78,7 +73,6 @@ router.get("/delete/:id", (req, res) => {
 });
 router.get("/edit/:id", async (req, res) => {
   let productDetails = await productHelpers.getProduct(req.params.id);
-  console.log(productDetails);
   res.render("admin/editproduct", { productDetails });
 });
 router.post("/editproduct/:id", (req, res) => {
@@ -115,9 +109,7 @@ router.get("/orderdetails/:id",verifyLogin, async (req, res) => {
   });
 });
 router.post("/change_action", (req, res) => {
-  console.log(req.body);
   productHelpers.changeAction(req.body).then(() => {
-    console.log("Status Changed");
     res.json({ status: true });
   });
 });
@@ -132,7 +124,6 @@ router.get("/all_users", verifyLogin, (req, res) => {
   });
 });
 router.get("/delete_user/:id", async (req, res) => {
-  console.log(req.params.id);
   await productHelpers.deleteUser(req.params.id).then(() => {
     res.redirect("/admin/all_users");
   });

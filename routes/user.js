@@ -13,11 +13,9 @@ const verifyLogin = (req, res, next) => {
 /* GET home page. */
 router.get("/", async function (req, res, next) {
   let user = req.session.user;
-  console.log(user);
   let cartCount = null;
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id);
-    console.log(cartCount);
   }
   productHelpers.getAllProducts().then((products) => {
     res.render("user/view-products", { products, user, cartCount });
@@ -34,7 +32,6 @@ router.post("/login", (req, res) => {
     if (data.loginStatus) {
       req.session.userLogin = true;
       req.session.user = data.user;
-      console.log(data.user);
       res.redirect("/");
     } else {
       req.session.userLoginErr = "Invalid Username or Password";
@@ -87,7 +84,6 @@ router.get("/buynow/:id", verifyLogin, async (req, res) => {
   res.render("user/checkout", { total, user: user });
 });
 router.post("/change_product_quantity", (req, res) => {
-  console.log(req.body);
   userHelpers.changeProductQuantity(req.body).then(async (response) => {
     response.totalAmount = await userHelpers.getTotal(req.body.user);
     res.json(response);
@@ -107,7 +103,6 @@ router.post("/place_order", verifyLogin, async (req, res) => {
   let product = await userHelpers.getFromCart(req.body.userId);
   let totalPrice = await userHelpers.getTotal(req.body.userId);
   userHelpers.placeOrder(req.body, product, totalPrice).then((orderId) => {
-    console.log(req.body);
     if (req.body["payment-method"] == "COD") {
       res.json({ cod_success: true });
     } else {
@@ -122,8 +117,6 @@ router.get("/order_success", verifyLogin, (req, res) => {
 });
 router.get("/orders", verifyLogin, async (req, res) => {
   let orders = await userHelpers.getUserOrders(req.session.user._id);
-  console.log("going to order page");
-  console.log(orders);
   res.render("user/orders", { user: req.session.user, orders });
 });
 router.get("/cancel_order/:id",verifyLogin,(req,res)=>{
@@ -134,62 +127,25 @@ router.get("/cancel_order/:id",verifyLogin,(req,res)=>{
 router.get("/view_order_products/:id", verifyLogin, async (req, res) => {
   let products = await userHelpers.getOrderProducts(req.params.id);
   let orderStatus = await userHelpers.getOrderStatus(req.params.id);
-  console.log(orderStatus);
-  let progressBarValue = changePrgressValue(orderStatus.status);
-  console.log(progressBarValue);
+
   res.render("user/view-order-products", {
     user: req.session.user,
     products,
     orderStatus,
-    progressBarValue,
+    // progressBarValue,
   });
 });
 
 router.post("/verify_payment", (req, res) => {
-  console.log(req.body);
   userHelpers
     .verifyPayment(req.body)
     .then(() => {
       userHelpers.changePaymentStatus(req.body["order[receipt]"]).then(() => {
-        console.log("successfull");
         res.json({ status: true });
       });
     })
     .catch((err) => {
-      console.log(err);
       res.json({ status: false });
     });
 });
-
-function changePrgressValue(status) {
-  console.log(status);
-  var changedValues = [];
-  switch (status) {
-    case "Pending":
-      changedValues.value = "100";
-      changedValues.color = "dark";
-      break;
-    case "Placed":
-      changedValues.value = "25";
-      changedValues.color = "info";
-      break;
-    case "Confirmed":
-      changedValues.value = "50";
-      changedValues.color = "warning";
-      break;
-    case "Shipped":
-      changedValues.value = "75";
-      changedValues.color = "primary";
-      break;
-    case "Delivered":
-      changedValues.value = "100";
-      changedValues.color = "success";
-      break;
-    case "Cancelled":
-      changedValues.value = "100";
-      changedValues.color = "danger";
-      break;
-  }
-  return changedValues;
-}
 module.exports = router;
