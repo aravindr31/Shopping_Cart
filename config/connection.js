@@ -1,11 +1,12 @@
+require('dotenv').config()
 const mongoClient=require('mongodb').MongoClient;
 const state={
     db:null
 }
 
 module.exports.connect=function(done){
-    const url='mongodb://localhost:27017'
-    const dbname='shopping'
+    const url=process.env.database_url
+    const dbname=process.env.database_name
 
     mongoClient.connect(url,(err,data)=>{
         

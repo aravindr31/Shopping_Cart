@@ -1,12 +1,12 @@
-var db = require("../config/connection");
-var collection = require("../config/collections");
+require('dotenv').config()
+const db = require("../config/connection");
+const collection = require("../config/collections");
 const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
-const collections = require("../config/collections");
 const Razorpay = require("razorpay");
 var instance = new Razorpay({
-  key_id: "rzp_test_Jt7dPp8jwV1KsB",
-  key_secret: "j3G9STm9IILKgchw9VrGRAQ1",
+  key_id: process.env.razorpay_key,
+  key_secret: process.env.razorpay_secret,
 });
 module.exports = {
   signup: (signUpData) => {
@@ -21,6 +21,7 @@ module.exports = {
     });
   },
   login: (signInData) => {
+    console.log(process.env.razorpay_key,process.env.razorpay_secret)
     return new Promise(async (resolve, reject) => {
       let response = {};
       let user = await db
@@ -270,18 +271,18 @@ module.exports = {
     return new Promise((resolve, reject) => {
       console.log(order, product, total);
       let status = order["payment-method"] === "COD" ? "Placed" : "Pending";
-      let orderObj = {
-        deliveryDetails: {
-          firstName: order.firstName,
-          lastName: order.lastName,
-          address: order.address,
-          locality: order.locality,
-          landmark: order.landmark,
-          city: order.place,
-          state: order.state,
-          pincode: order.pincode,
-          mobile: order.mobile,
-        },
+        let orderObj = {
+          deliveryDetails: {
+            firstName: order.firstName,
+            lastName: order.lastName,
+            address: order.address,
+            locality: order.locality,
+            landmark: order.landmark,
+            city: order.place,
+            state: order.state,
+            pincode: order.pincode,
+            mobile: order.mobile,
+          },
         userId: ObjectId(order.userId),
         paymentMethod: order["payment-method"],
         products: product,
@@ -400,11 +401,13 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const crypto = require("crypto");
       let hmac = crypto.createHmac("sha256", "j3G9STm9IILKgchw9VrGRAQ1");
+            console.log(hmac)
       hmac.update(
         details["payment[razorpay_order_id]"] +
           "|" +
           details["payment[razorpay_payment_id]"]
       );
+
       hmac = hmac.digest("hex");
       if (hmac === details["payment[razorpay_signature]"]) {
         resolve();
@@ -421,7 +424,7 @@ module.exports = {
           { _id: ObjectId(orderId) },
           {
             $set: {
-              status: "Placed",
+              status: "Placed",   
             },
           }
         )
