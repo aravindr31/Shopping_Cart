@@ -3,10 +3,8 @@ var collection = require("../config/collections");
 const { ObjectId } = require("mongodb");
 module.exports = {
   login: (signInData) => {
-    // console.log("here")
     return new Promise(async (resolve, reject) => {
       let adminCheck = await db.get().collection(collection.ADMIN_COLLECTION).findOne({username:signInData.Username})
-      console.log(adminCheck)
       if([adminCheck].length==0){resolve()}
       else{
       let auth = await db
@@ -25,7 +23,6 @@ module.exports = {
           },
         ])
         .toArray();
-        console.log("auth",auth)
       resolve(auth[0]);
       }
     });
