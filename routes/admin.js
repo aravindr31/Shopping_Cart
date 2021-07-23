@@ -1,4 +1,4 @@
-  var express = require("express");
+var express = require("express");
 var router = express.Router();
 var productHelpers = require("../helpers/product-helpers");
 
@@ -21,7 +21,13 @@ router.get("/login", (req, res) => {
   req.session.adminLoginErr = "";
 });
 router.post("/login", (req, res) => {
+  console.log(req.body)
   productHelpers.login(req.body).then((data) => {
+    if(!data){
+      req.session.adminLoginErr = "Invalid Username or Password";
+      res.redirect("/admin/login");
+    }
+    else{
     if (data.status) {
       req.session.adminLogin = true;
       req.session.admin = data.username;
@@ -30,9 +36,9 @@ router.post("/login", (req, res) => {
       req.session.adminLoginErr = "Invalid Username or Password";
       res.redirect("/admin/login");
     }
+  }
   });
 });
-/* GET users listing. */
 router.get("/", verifyLogin, function (req, res, next) {
   let adminLog = req.session.admin;
   productHelpers.getAllProducts().then((products) => {
